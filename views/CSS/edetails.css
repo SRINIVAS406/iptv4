@@ -1,0 +1,68 @@
+/* table styles */
+.tablereport{
+    width: inherit;
+   
+    height: auto;
+    overflow: auto;
+    
+}
+
+.active_booth{
+    color:#04AA6D;
+}
+
+.card{
+    margin:10px;
+}
+
+
+.nav-link{
+    color: #f2fff0;
+}
+
+.nav-back{
+    background: #766e6e;
+}
+
+.active .nav-link{
+   color: #495057;
+}
+
+.nav-tabs .active {
+    background: #fff;
+}
+
+.sections{
+    border:1px solid black;
+    padding:10px;
+    background: #baceed;
+}
+
+#surveyinfo {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: auto;
+       
+   }
+
+  #surveyinfo td,
+  #surveyinfo th {
+    border: 1px solid #010101;
+    padding: 8px;
+  }
+
+  #surveyinfo tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #surveyinfo tr:hover {
+    background-color: #ddd;
+  }
+
+  #surveyinfo th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+  }

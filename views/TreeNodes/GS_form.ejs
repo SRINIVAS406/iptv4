@@ -1,0 +1,168 @@
+<%- include('./partials/header.ejs')%>
+<%- include('./partials/navbar.ejs')%>
+<link rel="stylesheet" href="../CSS/nodeforms.css">
+<div class="container">
+
+    <div id="card">
+        <div id="card-title">
+          <h2>General Secretary</h2>
+          <div class="underline-title"></div>
+        </div>
+        <div id="card-body">
+            <div class="">
+                <form class="form" method="POST" action="/createUpdateGS"  id="gsform">
+                  <div class="form-group">
+                    <label for="parent">Parent</label>
+                    <select class="form-control" id="parent" name="parent" ></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="id">ID</label>
+                    <input type="number" class="form-control" id="id" name="id" >
+                  </div>
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Abel Tutor" name="name" >
+                  </div>
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <select class="form-control" id="title" name="title" >
+                      <option value="">--None--</option>
+                    
+                    <option value="Booth Adhyaksh">Booth Adhyaksh</option>
+                    <option value="Booth Agent">Booth Agent</option>
+                    <option value="BLA">BLA</option>
+                    <option value="General Secretary">General Secretary</option>
+                    <option value="SC">SC</option>
+                    <option value="ST">ST</option>
+                    <option value="Mahila Adhyaksh">Mahila Adhyaksh</option>
+                    <option value="General">General</option>
+                  </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="text" class="form-control" id="age" placeholder="35" name="age" >
+                  </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="party">Gender</label>
+                    <select class="form-control" id="gender" name="gender" >
+                        <option value="">--None--</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="religion">Religion </label>
+                    <select class="form-control" id="religion" name="religion" >
+                        <option value="">--None--</option>
+                      <option value="Hindu">Hindu</option>
+                      <option value="Muslim">Muslim</option>
+                      <option value="Christian">Christian</option>
+                      <option value="Sikh">Sikh</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="caste">Caste </label>
+                    <select class="form-control" id="caste" name="caste" >
+                        <option value="">--None--</option>
+                      <option value="General">General</option>
+                      <option value="SC">SC</option>
+                      <option value="ST">ST</option>
+                      <option value="OBC">OBC</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="subcaste">Sub-Caste</label>
+                    <input type="text" class="form-control" id="subcaste" name="subcaste" >
+                  </div>
+                  <div class="form-group">
+                    <label for="contact">Contact Number</label>
+                    <input type="number" class="form-control" id="contact" name="contact" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="emailID">Email Address</label>
+                    <input type="email" class="form-control" id="emailID" name="emailID" >
+                  </div>
+                  <div class="form-group">
+                    <label for="fbID">Facebook ID</label>
+                    <input type="text" class="form-control" id="fbID" name="fbID" >
+                  </div>
+                  <div class="form-group">
+                    <label for="tweet">Twitter Link</label>
+                    <input type="text" class="form-control" id="tweet" name="tweet" >
+                  </div>
+                  <div class="form-group">
+                    <label for="Education">Education</label>
+                    <input type="text" class="form-control" id="Education" name="Education" >
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="profession">Profession</label>
+                    <input type="text" class="form-control" id="profession" name="profession" >
+                  </div>
+                  <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id = 'address' name = 'address' class="form-control"  rows ='4' cols="50">
+                    </textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="psNo">Polling Station Number</label>
+                    <input type="number" class="form-control" id="psNo" name="psNo" >
+                  </div>
+                  <div class="form-group">
+                    <label for="psName">Polling Station Name</label>
+                    <input type="text" class="form-control" id="psName" name="psName" >
+                  </div>
+                  <div class="form-group">
+                    <label for="noStations">Number of Stations Responsible For</label>
+                    <input type="number" class="form-control" id="noStations" name="noStations" >
+                  </div>
+                  <div class="form-group">
+                    <label for="boothNo">Booth Numbers Responsible For</label>
+                    <textarea id = 'boothNo' class="form-control" name = 'boothNo' rows ='4' cols="50">
+                    </textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="active">Active</label>
+                    <input type="checkbox" class="form-check-input form-control" id="active" name="active" ="">
+                  </div>
+                  <div class="form-group">
+                    <label for="caste">Verification </label>
+                    <select class="form-control" id="verfication" name="verfication" >
+                        <option value="">--None--</option>
+                      <option value="complete">complete</option>
+                      <option value="In progress">In progress</option>
+                      <option value="In valid">In valid</option>
+                    </select>
+                  </div>
+                  
+                  <button type="submit" id="submit-btn" class="btn btn-primary mb-2">Submit</button>
+                </form>
+              </div>
+    
+          </div>
+    </div>
+    
+</div>
+
+<script>
+  var request = new XMLHttpRequest();
+request.open('GET', '/getTreeChildNode?title=Ward+Incharge', false);  // `false` makes the request synchronous
+request.send(null);
+var elctioninfo=[];
+if (request.status === 200) {
+elctioninfo = JSON.parse(request.response);  
+
+var parent = document.getElementById('parent');
+ parent.innerHTML = `<option value="">--None--</option>`;
+ for (var i = 0; i < elctioninfo.length; i++) {
+   parent.innerHTML += `<option value="${elctioninfo[i].id}">${elctioninfo[i].id}</option>`;
+ }
+}
+</script>
+
+
+<%- include('./partials/footer.ejs')%>

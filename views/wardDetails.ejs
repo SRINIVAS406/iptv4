@@ -1,0 +1,460 @@
+<%- include('./partials/header.ejs')%>
+<%- include('./partials/navbar.ejs')%>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<div class="container" ng-app="myApp" ng-controller="surveyinfoCtrl">
+  <h1>Ward Details</h1>
+  <br>
+  <div >
+    <div ng-init="loader=true" ng-show="loader" style="margin: auto;margin-top:200px;
+    width: 100%;
+    height:700px;
+    text-align: center;">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-info" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-dark" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
+    <div style="{{loader?'display:none':''}}">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 .col-md-12 .col-lg-12 .col-xl-12 ">
+            <div class="tablereport">
+              <table id="surveyinfo">
+                <tr>
+                  <th>Sl.No.</th>
+                  <th>Ward</th>
+                  <th style="width:200px;">Name</th>
+                  <th>Verified</th>
+                  <th>Verify Count</th>
+                </tr>
+                <tr ng-repeat="x in boothdata">
+                  <td>{{$index+1}}</td>
+                  <td><button ng-click="showTabs(x.id)" class="btn"><a href="#sectiontabs" ng-class="tabid==x.id?'active_booth':''">{{x.id}}</a></button></td>
+                  <td>
+                    {{ x.name }}
+                  </td>
+                  <td ng-bind="(x.boothlist.length?Math.floor((100*x.boothlist.length)/(12*x.adhyksh.length)):0)+'%'"></td>
+                  <td ng-bind="(x.boothlist.length?x.boothlist.length:0)+'/'+(12*x.adhyksh.length)"></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container" id="sectiontabs" style="padding-top:60px;">
+        <div class="row">
+          <div class="sections" ng-show="tabDisplay">
+            <ul class="nav nav-tabs">
+              <li class="nav-item" ng-class="activetab=='boothverify'?'active':'nav-back'" ng-click="markactive('boothverify')">
+                <a class="nav-link " aria-current="page" href="#sectiontabs">Booth Members</a>
+              </li>
+              <!-- <li class="nav-item" ng-class="activetab=='survey_detail'?'active':'nav-back'" ng-click="markactive('survey_detail')">
+                <a class="nav-link" href="#sectiontabs">Survey Detail</a>
+              </li> -->
+              <!-- <li class="nav-item" ng-class="activetab=='boothverify'?'active':'nav-back'" ng-click="markactive('boothverify')">
+                <a class="nav-link" href="#sectiontabs">Booth Verfication</a>
+              </li>-->
+              <li class="nav-item" ng-class="activetab=='influence_list'?'active':'nav-back'" ng-click="markactive('influence_list')">
+                <a class="nav-link" href="#sectiontabs">Influencer List</a>
+              </li> 
+              <!-- <li class="nav-item" ng-class="activetab=='survey_detail'?'active':'nav-back'" ng-click="markactive('survey_detail')">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              </li> -->
+            </ul>
+
+            <div ng-show="activetab=='boothverify'">
+              <div id="cardblock">
+                <div class="row">
+                  <div ng-show="verifieddata1.length==0">
+                    <h2 style="padding:30px">No members in this booth</h1>
+                  </div>
+                  <div class="col-sm-4" ng-repeat="treedata in verifieddata1">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-8">
+                            <p class="card-title">{{treedata.booth}}</p>
+                            <p><b>{{treedata.name}}</b></p>
+
+                            <p>{{treedata.function?treedata.function:'.'}}</p>
+                            <button ng-click="showBaForm(treedata,'Verify')" class="btn btn-primary">More Info</button>
+                          </div>
+                          <div class="col-4"><img src="/JS/male.png" alt="Avatar" id="cardimg" style="width: 90px;height: 90px;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div ng-show="activetab=='influence_list'">
+              <div class="table-responsive" style="background: aliceblue;">
+                <table id="section_influencer_table" class="table table-striped table-bordered" style="width:100%">
+                  <thead>
+                    <tr id="section_influencerLabel">
+                    </tr>
+                  </thead>
+                  <tbody id="section_influencerRow">
+                    </tfoot>
+                </table>
+              </div>
+            </div>
+            <div ng-show="activetab=='survey_detail'"><%- include('../HighChartReport/highChartReport.ejs')%></div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="formmodals" >
+    <!-- WIC Modal -->
+    <div>
+      <button style="display:none" type="button" id="wicbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#wicmodal">
+        BCMModal
+      </button>
+      <div class="modal fade" id="wicmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+            <button type="button" class="close btn" style="margin-right:auto" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div><%- include('./TreeNodes/WIC_form.ejs')%></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- WIC Modalends -->
+    <!-- Verify Modal -->
+    <div>
+      <button type="button" style="display:none" id="bvbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bvmodal">
+        VerifyModal
+      </button>
+      <div class="modal fade" id="bvmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-body"><button type="button" class="close btn" style="margin-right:auto" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div><%- include('./boothVerificationList.ejs')%></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Verify Modalends -->
+  </div>
+
+</div>
+
+
+
+<script>
+  //angularjs code for table
+  var booth = '';
+  var app = angular.module('myApp', []);
+  app.controller('surveyinfoCtrl', function($scope, $http, $q, $timeout) {
+    $scope.loader = true;
+    $scope.Math = window.Math;
+    $scope.tabDisplay = false;
+    $scope.boothdata = [];
+    var promisebooth = [];
+    promisebooth.push($http.get('/getTreeChildNode?title=Mandal Adhyaksh').then(function(response) {
+      $scope.boothdata = response.data;
+      $scope.loader = false;
+    }));
+
+    $q.all(promisebooth).then(function() {
+    $http.get('/getVerificatioListData').then(function(response) {
+      $scope.verifieddata = response.data;
+      $scope.verifieddata.forEach((boothval)=>{
+        let wardid = boothval.ward.toUpperCase();
+        $scope.boothdata.forEach((wardval,index)=>{
+          //console.log(wardval.id+'--'+wardid);
+          if(wardval.id == wardid && boothval.function){
+            if(!wardval.boothlist) wardval.boothlist=[]; 
+            if(boothval.verification_status == 'Verified') //status
+            wardval.boothlist.push(boothval.booth);
+            if(boothval.function && boothval.function.toLowerCase().indexOf('adhyak') > -1){
+              if(!wardval.adhyksh) wardval.adhyksh=[]; 
+            wardval.adhyksh.push(boothval.name);
+            }
+          }
+      });
+
+      })
+    });
+  });
+
+
+    $scope.showBaForm = function(baformdata, title) {
+      if (title == "Ward Incharge") {
+        let a = document.forms['wicform'].elements;
+        for (i = 0; i < a.length; i++) {
+          if (a[i].type == "select-one") {
+            a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+          }
+          if (a[i].type == "number") {
+            a[i].type = 'text';
+          }
+          if (baformdata[a[i].name])
+            a[i].value = baformdata[a[i].name];
+        }
+        document.getElementById('wicbutton').click();
+      }
+      if (title == "Verify") {
+        document.getElementById('bvbutton').click();
+        document.getElementById("bvform").setAttribute('pointer-events','none');
+        setTimeout(() => { 
+        let a = document.forms['bvform'].elements;
+        for (i = 0; i < a.length; i++) {
+          if (a[i].type == "select-one" && a[i].id=='booth') {
+            a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+           
+          }
+          if (a[i].type == "number") {
+            a[i].type = 'text';
+          }
+          if (baformdata[a[i].name])
+            a[i].value = baformdata[a[i].name];
+        }
+        document.getElementById("bvform").setAttribute('pointer-events','none');
+      },1000);
+    }
+    }
+
+
+
+
+    $scope.activetab = 'boothverify';
+    $scope.markactive = function(tab) {
+      $scope.activetab = tab;
+    }
+
+    var arr = [];
+    $scope.showTabs = function(tabid) {
+      // $scope.loader = true;
+      var arr = [];
+      $scope.verifieddata1 = $scope.verifieddata.filter(checkdata)
+      
+      function checkdata(v) {
+        //console.log('test' + val.booth + tabid);
+        var ward = v.ward.indexOf('W') ? v.ward : "W" + v.ward;
+        if (v.ward == tabid && v.function &&v.function.toLowerCase().indexOf('adhyak') > -1) {
+          arr.push(v.booth.toUpperCase().indexOf('B')>-1 ? v.booth.toUpperCase() : "B" + v.booth);
+          return true;
+
+        } else return false;
+      }
+      console.log("Array Data:"+arr);
+      //************ EVENT START ***********
+      const event = new CustomEvent("generateReport", {
+        detail: {
+          idlist: arr
+        }
+      });
+
+      generateInflBfData('influencer', "influencerColumns", "influencerData", arr);
+      document.dispatchEvent(event);
+      //************ EVENT START ***********
+      $scope.members = [];
+      $scope.tabDisplay = true;
+      $scope.tabid = tabid;
+      $scope.agents = [];
+      var defer = $q.defer();
+      var promise = [];
+    }
+
+  });
+</script>
+
+<style>
+  .datatablesection {
+      display: none;
+    }
+    .modal-backdrop
+{
+    opacity:0.2 !important;
+}
+</style>
+
+<script>
+  var gi = 0;
+
+  function generateInflBfData(tablename, columnList, columnData, tabid) {
+    if (gi != 0) {
+      $('#section_' + tablename + '_table').DataTable().destroy();
+    }
+    gi++;
+    let columName = [];
+    document.getElementById('section_' + tablename + 'Label').innerHTML = '';
+    document.getElementById('section_' + tablename + 'Row').innerHTML = '';
+
+
+    $.ajax({
+      url: columnList,
+      success: function(result) {
+        console.log("RESULT----------",result);
+        $('#section_' + tablename + 'Label').append(`<th title="">Sl.No.</th>`)
+        for (let property in result) {
+          columName.push(property)
+          $('#section_' + tablename + 'Label').append(`<th title="${result[property]}">${result[property]}</th>`)
+        }
+      },
+      async: false
+    });
+
+    $.ajax({
+      url: columnData,
+      success: function(result) {
+        console.log("RESULT----------",result);
+        if (tabid) {
+          result = result.filter((v) => {
+            console.log(tabid + "--" + v.booth);
+            if (v.booth.indexOf('B') > -1)
+              return tabid.indexOf(v.booth) > -1;
+            else
+              return tabid.indexOf("B" + v.booth) > -1;
+          });
+
+        }
+        result.forEach((rowData, index) => {
+          $('#section_' + tablename + 'Row').append(`<tr id="tableData${index}"></tr>`)
+          $('#tableData' + index).append(`<td>${index+1}</td>`)
+          if (rowData)
+            columName.forEach((val) => {
+
+              $('#tableData' + index).append(`<td>${result[index][val]?result[index][val]:''}</td>`)
+            });
+        });
+
+        $('#section_' + tablename + '_table').DataTable({
+
+          lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, 'All'],
+          ],
+
+          buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+          ],
+          dom: 'Blfrtip',
+        });
+
+      },
+      async: false
+    });
+  }
+</script>
+
+
+<style>
+  .table-responsive {
+    padding: 20px;
+    border: 1px solid #121212;
+    border-radius: 8px;
+    box-shadow: 1px 2px 8px rgb(0 0 0 / 65%);
+  }
+
+  table {
+    border: 1px solid #121212 !important;
+  }
+
+
+  #section_influencer_table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #section_influencer_table td,
+  #section_influencer_table th {
+    border: 1px solid rgb(58, 55, 55);
+    padding: 8px;
+  }
+
+  #section_influencer_table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #section_influencer_table tr:hover {
+    background-color: #ddd;
+  }
+
+  #section_influencer_table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .datatablesection {
+    display: none;
+  }
+
+  #section_influencer_table_filter,
+  #section_influencer_table_length,
+  #surveyinfo_filter,
+  #surveyinfo_length {
+    float: left;
+  }
+
+  .dt-buttons {
+    float: right !important;
+  }
+
+  #section_influencer_table_filter,
+  #surveyinfo_filter {
+    margin-left: 20px;
+  }
+
+  .modal-backdrop {
+    opacity: 0.2 !important;
+  }
+
+  .verified{
+    background: linear-gradient(to bottom, #00cc66 0%, #66ff33 100%);
+  }
+  .in_progress{
+    background: linear-gradient(to bottom, #ff9999 0%, #ff6600 100%);
+  }
+  .in_valid{
+    background: linear-gradient(to bottom, #ff5050 0%, #990000 100%);
+  }
+</style>
+
+<script src="./JS/edetails.js"></script>
+<link rel="stylesheet" href="./CSS/edetails.css">
+<%- include('./partials/footer.ejs')%>

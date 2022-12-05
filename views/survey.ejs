@@ -1,0 +1,212 @@
+<%- include('./partials/header.ejs')%>
+<%- include('./partials/navbar.ejs')%>
+<link rel="stylesheet" href="./CSS/survey.css">
+<div class="container">
+  <% if (message) { %>
+  <h5 style="color:rgb(39, 120, 3)"><%-message %></h5>
+  <% } %>
+  <div id="card">
+    <div id="card-title">
+      <h2>Survey</h2>
+      <div class="underline-title"></div>
+    </div>
+    <div id="card-body">
+      <div class="">
+        <form class="form" method="POST" action="/survey">
+
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Abel Tutor" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="did_you_vote_last_time">Did you vote in 2018 from this constituency?</label>
+        <select class="form-control" id="did_you_vote_last_time" name="did_you_vote_last_time" >
+          <option value="">--None--</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="did_you_vote_from_this_ward">Did you vote in 2018 from this Ward?</label>
+        <select class="form-control" id="did_you_vote_from_this_ward" name="did_you_vote_from_this_ward" >
+          <option value="">--None--</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="whom_did_you_vote_for">Which party did you vote for in 2018 ?</label>
+        <select class="form-control" id="whom_did_you_vote_for" name="whom_did_you_vote_for" >
+          <option value="">--None--</option>
+          <option value="BJP">BJP</option>
+          <option value="INC">INC</option>
+          <option value="JDS">JD(S)</option>
+          <option value="AAP">AAP</option>
+          <option value="Others">Others</option>
+          <option value="AAP">NOTA</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="booth">Ward</label>
+        <select class="form-control" id="ward" name="ward" onchange="addbooths()" required>
+          <option value="">--None--</option>
+          <option value="W11">W11</option>
+          <option value="W32">W32</option>
+          <option value="W34">W34</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="booth">Booth</label>
+        <select class="form-control" id="booth" name="booth" required>
+          <option value="">--None--</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="age">Age</label>
+        <select class="form-control" id="age" name="age" required>
+          <option value="">--None--</option>
+          <option value="18-35">18-35</option>
+          <option value="36-49">36-49</option>
+          <option value="50+">50+</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="party">Gender</label>
+        <select class="form-control" id="gender" name="gender" required>
+          <option value="">--None--</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="religion">Religion </label>
+        <select class="form-control" id="religion" name="religion" required>
+          <option value="">--None--</option>
+          <option value="Hindu">Hindu</option>
+          <option value="Muslim">Muslim</option>
+          <option value="Christian">Christian</option>
+          <option value="Sikh">Sikh</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="caste">Caste </label>
+        <select class="form-control" id="caste" name="caste" required>
+          <option value="">--None--</option>
+          <option value="General">General</option>
+          <option value="SC">SC</option>
+          <option value="ST">ST</option>
+          <option value="OBC">OBC</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" class="form-control" id="address" placeholder="Hubli" name="address" required>
+      </div>
+      <div class="form-group">
+        <label for="contact_number">Contact Number</label>
+        <input type="text" class="form-control" id="contact_number" name="contact_number" >
+      </div>
+      <div class="form-group">
+        <label for="party">Which party would you vote for?</label>
+        <select class="form-control" id="party" name="party" required>
+          <option value="">--None--</option>
+          <option value="BJP">BJP</option>
+          <option value="INC">INC</option>
+          <option value="JDS">JD(S)</option>
+          <option value="AAP">AAP</option>
+          <option value="Others">Others</option>
+          <option value="AAP">NOTA</option>
+          <option value="Not Decided">Not Decided</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="reason">Reason for choosing </label>
+        <select class="form-control" id="choosereason" name="choosereason" required>
+          <option value="">--None--</option>
+          <option value="Educational Development">Educational Development</option>
+          <option value="Social Development">Social Development</option>
+          <option value="Religious Causes">Religious Causes</option>
+          <option value="Women Empowerment">Women Empowerment</option>
+          <option value="Employment Opportunity">Employment Opportunity</option>
+          <option value="Decrease in Poverty">Decrease in Poverty</option>
+          <option value="Law & Order">Law & Order</option>
+          <option value="Infrastructure Development">Infrastructure Development</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="why_not_bjp">Why not BJP</label>
+        <select class="form-control" id="why_not_bjp" name="why_not_bjp" >
+          <option value="">--None--</option>
+          <option value="Anti-Incompetency">Anti-Incompetency</option>
+          <option value="No development or Progress in 5yrs">No development or Progress in 5yrs</option>
+          <option value="High Inflation">High Inflation</option>
+          <option value="Poverty">Poverty</option>
+          <option value="Unemployment">Unemployment</option>
+          <option value="No benefit from govt scheme">No benefit from govt scheme</option>
+          <option value="Poor Infrastructure">Poor Infrastructure</option>
+          <option value="Law & order issue">Law & order issue</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="surveyed_by">Surveyed By</label>
+        <select class="form-control" id="surveyed_by" name="surveyed_by" required>
+          <option value="">--None--</option>
+          <option value="Harish">Harish</option>
+          <option value="Sayed">Sayed</option>
+          <option value="Venkatesh">Venkatesh</option>
+        </select>
+      </div>
+      <button type="submit" id="submit-btn" class="btn btn-primary mb-2">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  //     var request = new XMLHttpRequest();
+  // request.open('GET', '/treeNodeInfo?id=Polling+Station', false);  // `false` makes the request synchronous
+  // request.send(null);
+  // var surveyinfo=[];
+  // if (request.status === 200) {
+  //     surveyinfo = JSON.parse(request.response);   
+  //   }
+  //   console.log(surveyinfo);
+
+  //   select = document.getElementById('booth');
+  // for (var i = 0; i<surveyinfo.length; i++){
+  //     var opt = document.createElement('option');
+  //     opt.value = surveyinfo[i]['card_id'];
+  //     opt.innerHTML = surveyinfo[i]['card_id']+"-"+surveyinfo[i]['name'];
+  //     select.appendChild(opt);
+  // }
+
+  function addbooths() {
+    var wardRel = {
+  "W11":["B4","B5","B6","B7","B8","B9","B10","B11","B12","B15","B17"],
+  "W32": ["B216","B217","B218","B219","B220","B222","B223","B225","B238","B239","B240","B245"],
+  "W34":["B255","B256","B257","B258","B259","B260","B261","B262","B263","B264","B265","B266"]
+};
+    var wardid = document.getElementById('ward').value;
+    var booth = document.getElementById('booth');
+    booth.innerHTML = `<option value="">--None--</option>`;
+    for (var i = 0; i < wardRel[wardid].length; i++) {
+      booth.innerHTML += `<option value="${wardRel[wardid][i]}">${wardRel[wardid][i]}</option>`;
+    }
+
+
+  }
+</script>
+
+
+
+
+<%- include('./partials/footer.ejs')%>

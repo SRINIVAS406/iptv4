@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">HUBLI</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <% if(name){ %>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="/edetails">Booth-Details</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="/wardDetails">Ward-Details</a>
+          </li>
+
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="https://dev89686.service-now.com/Hubli">Dashboard</a>
+          </li> -->
+
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="/surveyreport">Constituency Report</a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link " href="/nodeForms">Team Forms</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/logout">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/registration">Registration</a>
+          </li>
+          <% } %>
+          
+          <% if(!name){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+
+           
+           
+          
+          <% } %>
+          
+          
+        </ul>
+      </div>
+    </div>
+  </nav>

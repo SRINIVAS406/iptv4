@@ -1,0 +1,72 @@
+<%- include('./partials/header.ejs')%>
+<%- include('./partials/navbar.ejs')%>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script>
+  //fetch('/surveydata').then((response) => response.json()).then((json) => {console.log(json)});
+</script>
+
+
+ 
+<div class="container">
+  <h4 style="color:rgb(175, 170, 170)">{{report_message}}</h4>
+  <div class="row">
+    <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6 ">
+      <div class="chart-container canvas pichart" >
+        <canvas class="canvasbody" id="party"></canvas>
+      </div>
+    </div>
+    
+      <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+        <div class="chart-container canvas" >
+          <canvas class="canvasbody" id="gender"></canvas>
+        </div>
+      </div>
+      <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+        <div class="chart-container canvas" >
+          <canvas class="canvasbody" id="age"></canvas>
+        </div>
+      </div>
+      <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+        <div class="chart-container canvas" >
+          <canvas class="canvasbody" id="caste"></canvas>
+        </div>
+      </div>
+      <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+        <div class="chart-container canvas" style="">
+          <canvas class="canvasbody" id="religion"></canvas>
+        </div>
+      </div>
+      <!-- <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+        <div class="chart-container canvas" style="position: relative; height:auto; width:">
+          <canvas class="" id="reason"></canvas>
+        </div>
+      </div> -->
+    
+   
+    
+  </div>
+</div>
+
+    
+<style>
+    .canvas{
+    /* height:200px;  */
+   display: inline-block;
+    position: relative;
+    width: 100%;
+    background: #fbfbfb;
+    border-radius: 8px;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+    padding: 30px;
+    margin:10px;
+    height:500px;
+}
+
+.canvasbody{
+    height:100% !important;
+}
+
+</style>
+<script src="./JS/report.js"></script>
+<%- include('./partials/footer.ejs')%>

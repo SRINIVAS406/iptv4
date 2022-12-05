@@ -1,0 +1,228 @@
+<%- include('./partials/header.ejs')%>
+<%- include('./partials/navbar.ejs')%>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+<script>
+  //fetch('/surveydata').then((response) => response.json()).then((json) => {console.log(json)});
+</script>
+<link rel="stylesheet" href="./CSS/surveyreport.css">
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 .col-md-4 .col-lg-4 .col-xl-4 ">
+      <div class="chart-container canvas pichart">
+        <canvas class="" id="party"></canvas>
+      </div>
+    </div>
+    <div class="col-sm-8 .col-md-8 .col-lg-8 .col-xl-8 ">
+      <div class="row">
+        <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+          <div class="chart-container canvas">
+            <canvas class="" id="gender"></canvas>
+          </div>
+        </div>
+        <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+          <div class="chart-container canvas">
+            <canvas class="" id="age"></canvas>
+          </div>
+        </div>
+        <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+          <div class="chart-container canvas">
+            <canvas class="" id="caste"></canvas>
+          </div>
+        </div>
+        <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+          <div class="chart-container canvas" style="">
+            <canvas class="" id="religion"></canvas>
+          </div>
+        </div>
+        <!-- <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6">
+        <div class="chart-container canvas" style="position: relative; height:auto; width:">
+          <canvas class="" id="reason"></canvas>
+        </div>
+      </div> -->
+      </div>
+
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="container">
+      <div class="chart-container canvas pichart" style="height: auto;">
+        <canvas class="canvasbody" id="surveyed_by"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div ng-app="myApp" ng-controller="surveyinfoCtrl">
+  <button class="btn btn-primary mb-3 pull-right" onclick="ExportToExcel('xlsx')">Export Survey to excel</button>
+
+  <div class="tablereport" style="font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;">
+    <table id="surveyinfo">
+      <tr style="position: sticky;top: 0;">
+        <th>Sl.No.</th>
+        <th>Surveyed By</th>
+        <th>Ward</th>
+        <th>Booth</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Party</th>
+        <th>Reason</th>
+        <th>Caste</th>
+        <th>Religion</th>
+        <th>Date</th>
+      </tr>
+      <tr ng-repeat="x in names">
+        <td>{{$index+1}}</td>
+        <td>{{x.surveyed_by}}</td>
+        <td>{{x.ward}}</td>
+        <td>{{x.booth}}</td>
+        <td>
+          {{ x.name }}
+        </td>
+        <td>
+          {{ x.age }}
+        </td>
+        <td>
+          {{ x.gender }}
+        </td>
+        <td>
+          {{ x.party }}
+        </td>
+        <td>
+          {{ x.choose_reason }}
+        </td>
+        <td>
+          {{ x.caste }}
+        </td>
+        <td>
+          {{ x.religion }}
+        </td>
+        <td>
+          {{ x.date }}
+        </td>
+      </tr>
+    </table>
+
+
+  </div>
+
+
+  <button class="btn btn-primary mb-3 pull-right mt-3" onclick="ExportToExcel1('xlsx')">Export Verified to excel</button>
+  <div >
+  <div class="tablereport">
+    <table id="boothVerifiedList">
+      <tr style="position: sticky;top: 0;">
+        <th>Sl.No.</th>
+        <th>Verified By</th>
+        <th>Ward</th>
+        <th>Booth</th>
+        <th>Remark</th>
+        <th>Name</th>
+        <th>Contact Number</th>
+        <th>Govt ID</th>
+        <th>Function</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Religion</th>
+        <th>Caste</th>
+        <th>Sub-Caste</th>
+        <th>Email</th>
+        <th>Education</th>
+        <th>Profession</th>
+        <th>Address</th>
+        <th>How many hours can you spend for party work in a week?</th>
+        <th>Time of Availability in Weekdays</th>
+        <th>Timing of Availability during weekdays</th>
+        <th>Time of Availability in Weekend</th>
+        <th>Timing of Availability during weekend</th>
+        <th>Time of Availability in the last 1 month of Campaign</th>
+        <th>Timing of Availability during last month</th>
+        <th>How many voters they are in direct contact with Contact Numbers.</th>
+        <th>Mode of Campaign</th>
+        <th>Vehicle Number</th>
+        <th>Number of local influencers identified in the booth</th>
+        <th>Date</th>
+      </tr>
+      <tr ng-repeat="val in verifieddata">
+        <td>{{$index+1}}</td>
+        <td>{{val.verified_by}}</td>
+        <td>{{val.ward}}</td>
+        <td>{{val.booth}}</td>
+        <td>{{val.remark}}</td>
+        <td>{{val.name}}</td>
+        <td>{{val.contact}}</td>
+        <td>{{val.govtID}}</td>
+        <td>{{val.function}}</td>
+        <td>{{val.age}}</td>
+        <td>{{val.gender}}</td>
+        <td>{{val.religion}}</td>
+        <td>{{val.caste}}</td>
+        <td>{{val.subcaste}}</td>
+        <td>{{val.emailID}}</td>
+        <td>{{val.Education}}</td>
+        <td>{{val.profession}}</td>
+        <td>{{val.address}}</td>
+        <td>{{val.totalWork}}</td>
+        <td>{{val.weekday}}</td>
+        <td>{{val.weektime}}</td>
+        <td>{{val.weekend}}</td>
+        <td>{{val.weektimeend}}</td>
+        <td>{{val.lastmonth}}</td>
+        <td>{{val.timemonth}}</td>
+        <td>{{val.totalvoter}}</td>
+        <td>{{val.campaign}}</td>
+        <td>{{val.vehicleNo}}</td>
+        <td>{{val.influencers}}</td>
+<td>{{ val.date }}</td>
+      </tr>
+    </table>
+
+
+  </div>
+  </div>
+</div>
+
+
+
+<script>
+  function ExportToExcel(type, fn, dl) {
+    var elt = document.getElementById('surveyinfo');
+    var wb = XLSX.utils.table_to_book(elt, {
+      sheet: "sheet1"
+    });
+    return dl ?
+      XLSX.write(wb, {
+        bookType: type,
+        bookSST: true,
+        type: 'base64'
+      }) :
+      XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+  }
+
+  function ExportToExcel1(type, fn, dl) {
+    var elt = document.getElementById('boothVerifiedList');
+    var wb = XLSX.utils.table_to_book(elt, {
+      sheet: "sheet1"
+    });
+    return dl ?
+      XLSX.write(wb, {
+        bookType: type,
+        bookSST: true,
+        type: 'base64'
+      }) :
+      XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+  }
+
+</script>
+<script src="./JS/surveyreport.js"></script>
+<%- include('./partials/footer.ejs')%>

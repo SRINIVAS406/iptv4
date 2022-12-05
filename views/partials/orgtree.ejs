@@ -1,0 +1,493 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div class="">
+  <hr>
+</div>
+<style>
+  #orgChartContainer {
+    width: inherit;
+    height: 600px;
+    overflow: auto;
+    background: #eeeeee;
+  }
+
+  /* @media (max-width: 480px) {
+    #orgChartContainer {
+        width: 300px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #orgChartContainer {
+        width: 300px;
+    }
+  } */
+</style>
+<script>
+  var dzoom = 1;
+
+  function zoom(val) {
+    if (val)
+      dzoom += val;
+    else
+      dzoom = 1;
+    document.querySelector('#chart_div').setAttribute('style', 'transform: scale(' + dzoom + ');');
+  }
+</script>
+<a class="btn zm zoom" onclick="zoom(0.05)"><i class="fas fa-search-plus"></i></a>
+<a class="btn zm zoom-out" onclick="zoom(-0.05)"><i class="fas fa-search-minus"></i></a>
+<a class="btn zm zoom-init" onclick="zoom()"><i class="fas fa-recycle"></i></a>
+<div style=" width: auto;
+height: 600px;
+overflow: auto;">
+  <!-- style="position: absolute;" -->
+  <div class="container" id="orgChartContainer">
+    <div id="chart_div" class="mt-5"></div>
+  </div>
+</div>
+
+
+<button style="display:none;" type="button" id="openblockdetail" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#blockdetail">
+</button>
+
+<!-- Modal -->
+<div style="display:none;" class="modal fade" id="blockdetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="blockdetailLabel">Block title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><a href="#chart_div"></a></button>
+      </div>
+      <div class="modal-body">
+        <!-- ***************************Form Data***************************** -->
+        <div class="container">
+          <div class="center"><img src="/JS/male.png" alt="Avatar" id="cardimg" style="display: block;
+                            margin-left: auto;
+                            margin-right: auto;
+                            width: 50%;"></div>
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name">
+
+            </div>
+            <div class="mb-3">
+              <label for="age" class="form-label">Age</label>
+              <input type="number" class="form-control" id="age" name="age">
+            </div>
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender</label>
+              <input type="text" class="form-control" id="gender" name="gender">
+            </div>
+            <div class="mb-3">
+              <label for="ward_no" class="form-label">Ward Number</label>
+              <input type="text" class="form-control" id="ward_no" name="ward_no">
+            </div>
+            <div class="mb-3">
+              <label for="poll_no" class="form-label">Polling Station Number</label>
+              <input type="text" class="form-control" id="poll_no" name="poll_no">
+            </div>
+            <div class="mb-3">
+              <label for="booth_no" class="form-label">Booth Number</label>
+              <input type="text" class="form-control" id="booth_no" name="booth_no">
+            </div>
+            <div class="mb-3">
+              <label for="caste" class="form-label">Caste</label>
+              <input type="text" class="form-control" id="caste" name="caste">
+            </div>
+            <div class="mb-3">
+              <label for="sub_caste" class="form-label">Sub-Caste</label>
+              <input type="text" class="form-control" id="sub_caste" name="sub_caste">
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">House Address</label>
+              <textarea class="form-control" id="address" name="address" rows="5">
+                                </textarea>
+            </div>
+            <div class="mb-3">
+              <label for="id_proof" class="form-label">ID Proof</label>
+              <input type="text" class="form-control" id="id_proof" name="id_proof">
+              <div id="emailHelp" class="form-text">Please provide authentic proof.</div>
+            </div>
+
+            <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+          </form>
+        </div>
+        <!-- ***************************************************************** -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="formmodals">
+  <!-- Verify Modal -->
+  <div>
+    <button type="button" style="display:none" id="bvbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bvmodal">
+      VerifyModal
+    </button>
+    <div class="modal fade" id="bvmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body"><button type="button" class="close btn" style="margin-right:auto" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div><%- include('../boothVerificationList.ejs')%></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Verify Modalends -->
+  <!-- MP Modal -->
+  <div>
+    <button style="display:none" type="button" id="mpbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mpmodal">
+      BCMModal
+    </button>
+    <div class="modal fade" id="mpmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body"></div>
+          <div><%- include('./TreeNodes/MP_form.ejs')%></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Mp Modalends -->
+
+  <!-- WIC Modal -->
+  <div>
+    <button style="display:none" type="button" id="wicbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#wicmodal">
+      BCMModal
+    </button>
+    <div class="modal fade" id="wicmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body"></div>
+          <div><%- include('./TreeNodes/WIC_form.ejs')%></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- WIC Modalends -->
+
+
+  <!-- BA Modal -->
+  <div>
+    <button type="button" id="babutton" style="display:none" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bamodal">
+      BAModal
+    </button>
+    <div class="modal fade" id="bamodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body"></div>
+          <div><%- include('./TreeNodes/BA_form.ejs')%></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BA Modalends -->
+
+  <!-- BP Modal -->
+  <div>
+    <button type="button" style="display:none" id="bpbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bpmodal">
+      BPModal
+    </button>
+    <div class="modal fade" id="bpmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body"></div>
+          <div><%- include('./TreeNodes/BP_form.ejs')%></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BP Modalends -->
+
+  <!-- GS Modal -->
+  <div>
+    <button type="button" style="display:none" id="gsbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gsmodal">
+      GSModal
+    </button>
+    <div class="modal fade" id="gsmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body"></div>
+          <div><%- include('./TreeNodes/GS_form.ejs')%></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GS Modalends -->
+
+  <!-- BCM Modal -->
+  <div>
+    <button style="display:none" type="button" id="bcmbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bcmmodal">
+      BCMModal
+    </button>
+    <div class="modal fade" id="bcmmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body"></div>
+          <div><%- include('./TreeNodes/BCM_form.ejs')%></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- BCM Modalends -->
+</div>
+
+<script>
+  //Make the DIV element draggagle:
+  //dragElement(document.getElementById("orgChartContainer"));
+
+  function dragElement(elmnt) {
+    var pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
+    if (document.getElementById("chart_div")) {
+      /* if present, the header is where you move the DIV from:*/
+      document.getElementById("chart_div").onmousedown = dragMouseDown;
+    } else {
+      /* otherwise, move the DIV from anywhere inside the DIV:*/
+      elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+      /* stop moving when mouse button is released:*/
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+</script>
+<script>
+  function showBaForm(id, title, objid) {
+    var obj = {
+      "General": "Booth Agent",
+      "SC": "Booth Agent",
+      "ST": "Booth Agent",
+      "Mahila Adhyaksh": "Booth Agent",
+      "Booth Agent": "General Secretary",
+      "BLA": "General Secretary",
+      "General Secretary": "Booth Adhyaksh",
+      "Booth Adhyaksh": "Ward Incharge",
+      "Ward Incharge": "Mandal Adhyaksh",
+      "Mandal Adhyaksh": "District President",
+      "MLA": "District President"
+    };
+    // if(title=='Mahila Adhyaksh'){
+    //   console.log(title);
+    //   console.log(obj[title]);
+    //   return;
+    // }
+    baformdata = {};
+    if (title == "Mandal Adhyaksh" || title == "MLA" || title == "Ward Incharge") {
+      var request = new XMLHttpRequest();
+      request.open('GET', '/getTreeChildNode?title=' + obj[title], false); // `false` makes the request synchronous
+      request.send(null);
+      var elctioninfo = [];
+
+      if (request.status === 200) {
+        elctioninfo = JSON.parse(request.response);
+        for (var i = 0; i < elctioninfo.length; i++) {
+          if (elctioninfo[i].id == id) {
+            baformdata = elctioninfo[i];
+          }
+        }
+      }
+    }
+
+
+    try {
+      if (title == "Mandal Adhyaksh" || title == "MLA") {
+        let a = document.forms['mpform'].elements;
+        for (i = 0; i < a.length; i++) {
+          if (a[i].type == "select-one") {
+            a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+          }
+          if (a[i].type == "number") {
+            a[i].type = 'text';
+          }
+          if (baformdata[a[i].name])
+            a[i].value = baformdata[a[i].name];
+        }
+        document.getElementById('mpbutton').click();
+      }
+      if (title == "Ward Incharge") {
+        let a = document.forms['wicform'].elements;
+        for (i = 0; i < a.length; i++) {
+          if (a[i].type == "select-one") {
+            a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+          }
+          if (a[i].type == "number") {
+            a[i].type = 'text';
+          }
+          if (baformdata[a[i].name])
+            a[i].value = baformdata[a[i].name];
+        }
+        document.getElementById('wicbutton').click();
+      }
+      if (title == "Booth Adhyaksh" || title == "General Secretary" || title === "Booth Agent" || title == "BLA-2" || title == "Mahila Member" || title == "SC" || title == "ST" || title == "OBC" || title == "Committee member") {
+        document.getElementById('bvbutton').click();
+        document.getElementById("bvform").setAttribute('pointer-events', 'none');
+        recordBAObj = verifiedData.filter((val) => {
+          return val._id == objid;
+        })[0];
+        setTimeout(() => {
+          let a = document.forms['bvform'].elements;
+          for (i = 0; i < a.length; i++) {
+            if (a[i].type == "select-one" && a[i].id == 'booth') {
+              a[i].innerHTML = `<option value="${recordBAObj[a[i].name]}">${recordBAObj[a[i].name]}<option>`
+            }
+            if (a[i].type == "number") {
+              a[i].type = 'text';
+            }
+            if (recordBAObj[a[i].name])
+              a[i].value = recordBAObj[a[i].name];
+          }
+          document.getElementById("bvform").setAttribute('pointer-events', 'none');
+        }, 1000);
+      }
+      //    if (title == "Booth Adhyaksh") {
+      //      let a = document.forms['bpform'].elements;
+      //      for (i = 0; i < a.length; i++) {
+      //        if(a[i].type=="select-one"){
+      //            a[i].innerHTML=`<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+      //          }
+      //          if(a[i].type=="number"){
+      //            a[i].type='text';
+      //          }
+      //        if (baformdata[a[i].name])
+      //          a[i].value = baformdata[a[i].name];
+      //      }
+      //      document.getElementById('bpbutton').click();
+      //    }
+      //    if (title == "General Secretary") {
+      //      let a = document.forms['gsform'].elements;
+      //      for (i = 0; i < a.length; i++) {
+      //        if(a[i].type=="select-one"){
+      //            a[i].innerHTML=`<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+      //          }
+      //          if(a[i].type=="number"){
+      //            a[i].type='text';
+      //          }
+
+      //        if (baformdata[a[i].name])
+      //          a[i].value = baformdata[a[i].name];
+      //      }
+      //      document.getElementById('gsbutton').click();
+      //    }
+      //    if (title == "Booth Agent" || title == "BLA") {
+      //      let a = document.forms['baform'].elements;
+      //      for (i = 0; i < a.length; i++) {
+      //        if(a[i].type=="select-one"){
+      //            a[i].innerHTML=`<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+      //          }
+      //          if(a[i].type=="number"){
+      //            a[i].type='text';
+      //          }
+
+      //        if (baformdata[a[i].name])
+      //          a[i].value = baformdata[a[i].name];
+      //      }
+      //      document.getElementById('babutton').click();
+      //    }
+      //    if (title == "General" || title == "SC" || title == "ST" || title == "Mahila Adhyaksh") {
+      //      let a = document.forms['bcmform'].elements;
+
+      //      for (i = 0; i < a.length; i++) {
+      //        if(a[i].type=="select-one"){
+      //            a[i].innerHTML=`<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+      //          }
+      //          if(a[i].type=="number"){
+      //            a[i].type='text';
+      //          }
+
+      //        if (baformdata[a[i].name]){
+      //          if(a[i].type=="select-one" && !a[i].innerHTML){
+      //            a[i].innerHTML=`<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+      //             var inputelement = `<input  type='text' id="${a[i].name}" name="${a[i].name}" value="${a[i].value}" />`;
+      //         if(a[i].id=='parent'){
+      //  a[i].insertAdjacentHTML("afterend",inputelement);
+      //          a[i].id='';
+      //          a[i].name='';
+      //         }
+
+      //          }
+      //          if(a[i].type=="number"){
+      //            a[i].type='text';
+      //          }
+
+      //          a[i].value = baformdata[a[i].name];
+      //        }
+
+      //      }
+      //      document.getElementById('bcmbutton').click();
+      //    }
+
+    } catch (err) {
+      alert(err);
+    }
+  }
+</script>
+
+<script src="../JS/orgtreejs.js"></script>
+<link rel="stylesheet" href="../CSS/orgtree.css" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

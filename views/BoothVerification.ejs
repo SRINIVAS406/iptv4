@@ -1,0 +1,48 @@
+<%- include('./partials/header.ejs')%>
+<%- include('./partials/navbar.ejs')%>
+<link rel="stylesheet" href="./CSS/login.css">
+
+<% if (message) { %>
+    <h3 style="color:darkmagenta"><%-message %></h3>
+    <% } %>
+
+<div id="card">
+  <div id="card-content">
+    <div id="card-title">
+      <h2>Booth Verifcation</h2>
+      <div class="underline-title"></div>
+    </div>
+    <form method="POST" action="/boothVerification" class="form">
+        <label for="user-boothid" style="padding-top:13px">
+            &nbsp;Booth ID
+          </label>
+          <input id="user-boothid" class="form-content" type="text" name="boothid"  required />
+          <div class="form-border"></div>
+      <label for="user-name" style="padding-top:13px">
+        &nbsp;List of Names
+      </label>
+      <input id="user-name" class="form-content" type="text" name="name" autocomplete="on" required />
+      <div class="form-border"></div>
+      <label for="user-count" style="padding-top:22px">&nbsp;Count
+      </label>
+      <input id="user-count" class="form-content" type="number" name="count" min="1" max="21" required />
+      <div class="form-border"></div>
+      <!-- <a href="#">
+        <legend id="forgot-pass">Forgot password?</legend>
+      </a> -->
+      <input id="submit-btn" type="submit" name="submit" value="Submit" />
+      
+    </form>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('start', (e)=>{
+        console.log(
+          `Reports are based on Boothid :
+          ${e.detail.platform}`
+          );
+          document.getElementById('user-boothid').value=e.detail.platform;
+    });
+</script>
+<%- include('./partials/footer.ejs')%>

@@ -1,0 +1,23 @@
+export default {
+    "ward": "Ward",
+    "booth": "Booth",
+    "name": "Name",
+    "age": "Age",
+    "gender": "Gender",
+    "religion": "Religion ",
+    "caste": "Caste ",
+    "subcaste": "Sub-Caste",
+    "contact": "Contact Number",
+    "emailID": "Email Address",
+    "fbID": "Facebook ID",
+    "tweet": "Twitter Link",
+    "Education": "Education",
+    "profession": "Profession",
+    "address": "Address",
+    "directVote": "Number of voters with Direct Access.",
+    "weekday": "Time and Timing of Availability in Weekdays",
+    "weekend": "Time &amp; Timing of Availability in Weekend",
+    "lastmonth": "Time &amp; Timing of Availability in the last 1 month of Campaign",
+    "meetings": "Planned Community Meetings",
+    "date":"Date"
+}

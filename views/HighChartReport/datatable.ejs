@@ -1,0 +1,202 @@
+
+<!-- Data table CDN start -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+<!-- Data table CDN ends -->
+<div class="container mb-3 pull-left" style="width:200px;">
+    <label for="collectionName">Table name</label>
+    <select class="form-select" aria-label="Default select example" id="collectionName">
+        <option value="">--None--</option>
+        <option value="1">Survey</option>
+        <option value="5">Verification</option>
+        <option value="3">Booth Facts</option>
+        <option value="4">Influencer</option>
+        <option value="2">Verification with UserID</option>
+      </select>
+</div>
+
+<div class="table-responsive">
+  <table id="myTable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+      <tr id="tableLabel2">
+      </tr>
+      <tr id="tableLabel">
+    </tr>
+    </thead>
+    <tbody id="tableRow"></tbody>
+    <tfoot>
+       
+      </tfoot>
+  </table>
+</div>
+
+
+
+<style>
+  .table-responsive {
+    padding: 20px;
+    border: 1px solid #121212;
+    border-radius: 8px;
+    box-shadow: 1px 2px 8px rgb(0 0 0 / 65%);
+  }
+
+  table {
+    border: 1px solid #121212 !important;
+  }
+
+
+  #myTable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #myTable td,
+  #myTable th {
+    border: 1px solid rgb(58, 55, 55);
+    padding: 8px;
+  }
+
+  #myTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #myTable tr:hover {
+    background-color: #ddd;
+  }
+
+  #myTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dt-buttons {}
+</style>
+<script>
+  $(document).ready(function() {
+
+
+    var collectionObj = {
+        "1": {
+          'columnName': "surveyColumns",
+          "data": "surveydata"
+        },
+        "2": {
+          'columnName': "verificationColumns",
+          "data": "verificationData"
+        },
+        "3": {
+          'columnName': "boothFactColumns",
+          "data": "boothFactData"
+        },
+        "4": {
+          'columnName': "influencerColumns",
+          "data": "influencerData"
+        },
+        "5": {
+          'columnName': "verificationColumns",
+          "data": "verificationDatav2"
+        }
+      }
+
+
+      var i=0;
+    $("#collectionName").change(function(){
+        if(i!=0){
+$('#myTable').DataTable().destroy();
+        }
+        i++;
+      let columName = [];
+      document.getElementById('tableLabel').innerHTML='';
+      document.getElementById('tableLabel2').innerHTML='';
+      document.getElementById('tableRow').innerHTML='';
+      
+   
+      $.ajax({
+        url: collectionObj[this.value].columnName,
+        success: function(result) {
+            $('#tableLabel').append(`<th title="">Sl.No.</th>`)
+          for (let property in result) {
+            columName.push(property)
+            $('#tableLabel').append(`<th title="${result[property]}">${result[property]}</th>`)
+          }
+            $('#tableLabel2').append(`<td class="filterdata" title="" >Sl.No.</td>`)
+          for (let property in result) {
+            $('#tableLabel2').append(`<td class="filterdata" title="${result[property]}">${result[property]}</td>`)
+          }
+        },
+        async: false
+      });
+
+      $.ajax({
+        url: collectionObj[this.value].data,
+        success: function(result) {
+          result.forEach((rowData, index) => {
+            $('#tableRow').append(`<tr id="tableData${index}"></tr>`)
+            $('#tableData' + index).append(`<td>${index+1}</td>`)
+            if (rowData)
+              columName.forEach((val) => {
+                $('#tableData' + index).append(`<td>${result[index][val]?result[index][val]:''}</td>`)
+              });
+          });
+
+          
+          
+          var table = $('#myTable').DataTable({
+            
+            lengthMenu: [
+              [10, 25, 50, -1],
+              [10, 25, 50, 'All'],
+            ],
+            fixedHeader: {
+            header: true,
+            footer: true
+        },
+
+            buttons: [
+              'copyHtml5',
+              'excelHtml5',
+              'csvHtml5',
+              'pdfHtml5'
+            ],
+            dom: 'Blfrtip',
+          });
+
+          $('#myTable thead td').each( function (i) {
+        var title = $('#myTable thead td').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="'+title+'" style="width:90%;min-width:50px;" data-index="'+i+'" />' );
+    } );
+
+    $( table.table().container() ).on( 'keyup', 'thead input', function () {
+        table
+            .column( $(this).data('index') )
+            .search( this.value )
+            .draw();
+    } );
+
+        },
+        async: false
+      });
+    });
+
+
+
+  });
+</script>

@@ -1,2 +1,1 @@
-# iptv3
-Stable version
+# HubliFreelanceV1

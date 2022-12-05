@@ -1,0 +1,639 @@
+<%- include('./partials/header.ejs')%>
+<%- include('./partials/navbar.ejs')%>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<div class="container">
+  <h1>Booth Details</h1>
+  <br>
+  <div ng-app="myApp" ng-controller="surveyinfoCtrl">
+    <div ng-init="loader=true" ng-show="loader" style="margin: auto;margin-top:200px;
+    width: 100%;
+    text-align: center;">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-info" role="status">
+        <span class="sr-only"></span>
+      </div>
+      <div class="spinner-grow text-dark" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
+    <div style="{{loader?'display:none':''}}">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 .col-md-12 .col-lg-12 .col-xl-12 ">
+            <div class="tablereport">
+              <table id="surveyinfo">
+                <thead> <tr>
+                  <th>Sl.No.</th>
+                  <th>Booth</th>
+                  <th style="width:200px;">Name</th>
+                  <th>Ward No</th>
+                  <th>Verified</th>
+                  <th>Verify Count</th>
+                </tr>
+                </thead>
+                <tbody ng-if="boothdata">
+                <tr ng-repeat="x in boothdata">
+                  <td>{{$index+1}}</td>
+                  <td><button ng-click="showTabs(x.id)" class="btn"><a href="#sectiontabs" ng-class="tabid==x.id?'active_booth':''">{{x.id}}</a></button></td>
+                  <td>
+                    {{ x.name }}
+                  </td>
+                  <td>
+                    {{ x.parent }}
+                  </td>
+                  <td>
+                    {{x.bv_percent?Math.floor((100*x.bv_percent)/12):0}}%
+                  </td>
+                  <td>
+                    {{x.bv_percent?x.bv_percent:0}}/12
+                  </td>
+                </tr>
+              </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container" id="sectiontabs" style="padding-top:60px;">
+        <div class="row">
+          <div class="sections" ng-show="tabDisplay">
+            <ul class="nav nav-tabs">
+              <li class="nav-item" ng-class="activetab=='booth_member'?'active':'nav-back'" ng-click="markactive('booth_member')">
+                <a class="nav-link " aria-current="page" href="#sectiontabs">Booth Members</a>
+              </li>
+              <li class="nav-item" ng-class="activetab=='survey_detail'?'active':'nav-back'" ng-click="markactive('survey_detail')">
+                <a class="nav-link" href="#sectiontabs">Survey Detail</a>
+              </li>
+              <li class="nav-item" ng-class="activetab=='boothverify'?'active':'nav-back'" ng-click="markactive('boothverify')">
+                <a class="nav-link" href="#sectiontabs">Booth Verfication</a>
+              </li>
+              <li class="nav-item" ng-class="activetab=='influence_list'?'active':'nav-back'" ng-click="markactive('influence_list')">
+                <a class="nav-link" href="#sectiontabs">Influencer List</a>
+              </li>
+              <li class="nav-item" ng-class="activetab=='boothfacts'?'active':'nav-back'" ng-click="markactive('boothfacts')">
+                <a class="nav-link" href="#sectiontabs">Booth Facts</a>
+              </li>
+              <!-- <li class="nav-item" ng-class="activetab=='survey_detail'?'active':'nav-back'" ng-click="markactive('survey_detail')">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              </li> -->
+            </ul>
+
+            <div class="contentbody" id="sectionbody">
+              <div ng-show="activetab=='booth_member'">
+                <div id="cardblock">
+                  <div class="row">
+                    <div ng-show="members.length==0">
+                      <h2 style="padding:30px">No members in this booth</h1>
+                    </div>
+                    <div class="col-sm-4" ng-repeat="treedata in members">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-8">
+                              <p class="card-title">{{treedata.id}}</p>
+                              <p><b>{{treedata.name}}</b></p>
+                              <p class="card-text">{{treedata.title}}</p>
+                              <p ng-if="treedata.verfication=='complete'" style="color:green">{{treedata.verfication}}</p>
+                              <p ng-if="treedata.verfication=='In progress'" style="color:orange">{{treedata.verfication}}</p>
+                              <p ng-if="treedata.verfication=='In valid'" style="color:red">{{treedata.verfication}}</p>
+                              <button ng-click="showBaForm(treedata,treedata.title)" class="btn btn-primary">More Info</button>
+                            </div>
+                            <div class="col-4"><img src="/JS/male.png" alt="Avatar" id="cardimg" style="width: 90px;height: 90px;"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-show="activetab=='survey_detail1'"><%- include('./report.ejs')%></div>
+              <div ng-show="activetab=='survey_detail'"><%- include('../HighChartReport/highChartReport.ejs')%></div>
+              <div ng-show="activetab=='influence_list'">
+
+                <div class="container mt-5" style="">
+                  <table class="table table-striped" style="background:white;">
+                    <thead>
+                      <tr>
+                        <th scope="col" ng-repeat="(key,value) in influence_listb17[0]">{{key}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="data in influence_listb17">
+                        <td ng-repeat="v in data">{{v}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div ng-show="activetab=='boothverify'">
+
+                <div id="cardblock">
+                  <div class="row">
+                    <div ng-show="members.length==0">
+                      <h2 style="padding:30px">No members in this booth</h1>
+                    </div>
+                    <div class="col-sm-4" ng-repeat="treedata in verifieddata1">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-8">
+                              <p class="card-title">{{treedata.booth}}</p>
+                              <p><b>{{treedata.name}}</b></p>
+
+                              <p>{{treedata.function?treedata.function:'.'}}</p>
+                              <button ng-click="showBaForm(treedata,'Verify')" class="btn btn-primary">More Info</button>
+                            </div>
+                            <div class="col-4"><img src="/JS/male.png" alt="Avatar" id="cardimg" style="width: 90px;height: 90px;"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div ng-show="activetab=='boothfacts'">
+                <div class="container mt-5" style="width:60%">
+
+                  <div><%- include('./partials/boothfacts.ejs')%></div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <div class="formmodals">
+      <!-- Verify Modal -->
+      <div>
+        <button type="button" style="display:none" id="bvbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bvmodal">
+          VerifyModal
+        </button>
+        <div class="modal fade" id="bvmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-body"></div>
+              <div><%- include('./boothVerificationList.ejs')%></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verify Modalends -->
+      <!-- BA Modal -->
+      <div>
+        <button type="button" style="display:none" id="babutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bamodal">
+          BAModal
+        </button>
+        <div class="modal fade" id="bamodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-body"></div>
+              <div><%- include('./TreeNodes/BA_form.ejs')%></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BA Modalends -->
+
+      <!-- BP Modal -->
+      <div>
+        <button type="button" style="display:none" id="bpbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bpmodal">
+          BPModal
+        </button>
+        <div class="modal fade" id="bpmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-body"></div>
+              <div><%- include('./TreeNodes/BP_form.ejs')%></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BP Modalends -->
+
+      <!-- GS Modal -->
+      <div>
+        <button type="button" style="display:none" id="gsbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gsmodal">
+          GSModal
+        </button>
+        <div class="modal fade" id="gsmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-body"></div>
+              <div><%- include('./TreeNodes/GS_form.ejs')%></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GS Modalends -->
+
+      <!-- BCM Modal -->
+      <div>
+        <button style="display:none" type="button" id="bcmbutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bcmmodal">
+          BCMModal
+        </button>
+        <div class="modal fade" id="bcmmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-body"></div>
+              <div><%- include('./TreeNodes/BCM_form.ejs')%></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- BCM Modalends -->
+    </div>
+
+  </div>
+
+
+
+
+
+  <script>
+    //angularjs code for table
+    var booth = '';
+    var app = angular.module('myApp', []);
+    app.controller('surveyinfoCtrl', function($scope, $http, $q, $timeout) {
+      $scope.loader = true;
+      $scope.Math = window.Math;
+      $scope.tabDisplay = false;
+      $scope.boothdata = [];
+      var promisebooth = [];
+      promisebooth.push($http.get('/getTreeChildNode?title=Ward Incharge').then(function(response) {
+        $scope.boothdata = response.data;
+      }));
+
+      promisebooth.push($http.get('/getVerificatioListData').then(function(response) {
+        $scope.verifieddata = response.data;
+      }));
+      $scope.influence_listb17 = [{
+          "Name": "Narayan Pawar",
+          "Contact Number": "9008454076",
+          "Age": "60+",
+          "Gender": "Male",
+          "Religion": "Hindu",
+          "Email Address": "",
+          "Education": "",
+          "Profession": "Retired",
+          "Address": "Saidapur",
+          "Number of voters with Direct Access.": "50-60",
+          "Number of hours he/she can devote": "4-5hrs",
+          "Planned Community Meetings": "In Progress"
+        },
+        {
+          "Name": "Sashikala Pawar",
+          "Contact Number": "9242177623",
+          "Age": "60+",
+          "Gender": "Female",
+          "Religion": "Hindu",
+          "Email Address": "",
+          "Education": "LLB",
+          "Profession": "Lawyer",
+          "Address": "Saidapur",
+          "Number of voters with Direct Access.": "70-80",
+          "Number of hours he/she can devote": "2-3 hrs per day",
+          "Planned Community Meetings": "In Progress"
+        },
+        {
+          "Name": "Shankar Gowda",
+          "Contact Number": "8147931316",
+          "Age": "40+",
+          "Gender": "Male",
+          "Religion": "Hindu",
+          "Email Address": "",
+          "Education": "",
+          "Profession": "Head of Lingayat Congress",
+          "Address": "",
+          "Number of voters with Direct Access.": "60-80",
+          "Number of hours he/she can devote": "2-3 hrs per day",
+          "Planned Community Meetings": "In Progress"
+        }
+      ];
+
+      var bfactsdata = {
+        "B17": {
+          "booth": "17",
+          "ward": "11",
+          "issues": "Jail's compound, road, traffic because of jail wall, Bellard Sir is not visiting, Bar license near residential area ",
+          "impArea": "Sub-Jail Road, Dummageri",
+          "events": "NA",
+          "women": "Yes",
+          "womenNo": "20-30",
+          "youth": "In Progress",
+          "youthNo": "40-50",
+          "senior": "In Progress",
+          "seniorNo": "30-40",
+          "lessVote": "No Major Areas Identified",
+          "noMeeting": "1",
+          "voters": "950-1000 (to be verified as per new list)",
+          "votersturnOver": "500-550",
+          "toHouses": "250-270",
+          "casteVote": "20% Brahmin, 40% Lingayat, 5% Maratha, 3% Rajput,30% Muslim, 2% Jain",
+          "associations": "No Major Associations identified",
+          "religious": "Kamleshwar Temple (Lingayat)",
+          "hotspot": "To be identified in next visit",
+          "WhatsApp": "In Progress",
+          "chance": "35-40%",
+          "voterSeg": "Lower Middle Class, Daily wagers, few upper middle class"
+        },
+        "B10": {
+          "ward": "11",
+          "booth": "10",
+          "issues": "No Major Issues",
+          "impArea": "Narayanpur 1st Cross, Sadankeri, Santosh Nagar, Haliyalnaka",
+          "events": "Hardly 1",
+          "casteVote": "Linagayat - 400, Brahmin - 350, Maratha - 80 to 100, SC/ST - 30-50, Muslim - <10, Christian<10",
+          "women": "Yes",
+          "womenNo": "20-30",
+          "youth": "In Progress",
+          "youthNo": "NA",
+          "senior": "In Progress",
+          "seniorNo": "30-40",
+          "lessVote": "",
+          "noMeeting": "0-1",
+          "voters": "1000-1050",
+          "votersturnOver": "60%",
+          "toHouses": "300+",
+          "associations": "Sri Shakti Sangh - 300+ women - Nivedita Sindhe, Education Society - , Narayanpur Association - 500+ people - 25 people are in Booth Committe, Lingaraj Sardesai Educational Center",
+          "religious": "Kariamma Temple",
+          "hotspot": "Narayanpur Park",
+          "WhatsApp": "In Progress",
+          "chance": "60-70%",
+          "voterSeg": "Lower Middle Class, Daily Wagers"
+        }
+      }
+
+      $scope.showBaForm = function(baformdata, title) {
+        if (title == "Verify") {
+          let a = document.forms['bvform'].elements;
+          for (i = 0; i < a.length; i++) {
+            if (a[i].type == "select-one") {
+              a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+              a[i].type = 'text';
+            }
+            if (a[i].type == "number") {
+              a[i].type = 'text';
+            }
+            if (baformdata[a[i].name])
+              a[i].value = baformdata[a[i].name];
+          }
+          document.getElementById('bvbutton').click();
+        }
+        if (title == "Booth Adhyaksh") {
+          let a = document.forms['bpform'].elements;
+          for (i = 0; i < a.length; i++) {
+            if (a[i].type == "select-one") {
+              a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+              a[i].type = 'text';
+            }
+            if (a[i].type == "number") {
+              a[i].type = 'text';
+            }
+            if (baformdata[a[i].name])
+              a[i].value = baformdata[a[i].name];
+          }
+          document.getElementById('bpbutton').click();
+        }
+        if (title == "General Secretary") {
+          let a = document.forms['gsform'].elements;
+          for (i = 0; i < a.length; i++) {
+            if (a[i].type == "select-one") {
+              a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+            }
+            if (a[i].type == "number") {
+              a[i].type = 'text';
+            }
+
+            if (baformdata[a[i].name])
+              a[i].value = baformdata[a[i].name];
+          }
+          document.getElementById('gsbutton').click();
+        }
+        if (title == "Booth Agent" || title == "BLA") {
+          let a = document.forms['baform'].elements;
+          for (i = 0; i < a.length; i++) {
+            if (a[i].type == "select-one") {
+              a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+            }
+            if (a[i].type == "number") {
+              a[i].type = 'text';
+            }
+
+            if (baformdata[a[i].name])
+              a[i].value = baformdata[a[i].name];
+          }
+          document.getElementById('babutton').click();
+        }
+        if (title == "General" || title == "SC" || title == "ST" || title == "Mahila Adhyaksh") {
+
+          let a = document.forms['bcmform'].elements;
+          for (i = 0; i < a.length; i++) {
+            if (a[i].type == "select-one") {
+              a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+            }
+            if (a[i].type == "number") {
+              a[i].type = 'text';
+            }
+
+            if (baformdata[a[i].name]) {
+              if (a[i].type == "select-one" && !a[i].innerHTML) {
+                a[i].innerHTML = `<option value="${baformdata[a[i].name]}">${baformdata[a[i].name]}<option>`
+              }
+              if (a[i].type == "number") {
+                a[i].type = 'text';
+              }
+              a[i].value = baformdata[a[i].name];
+            }
+
+          }
+          document.getElementById('bcmbutton').click();
+        }
+      }
+
+      $q.all(promisebooth).then(function() {
+        //console.log($scope.boothdata);
+        $scope.boothdata.forEach((val, index) => {
+          if ($scope.verifieddata)
+            $scope.verifieddata.forEach(v => {
+              if (v.booth == val.id || (v.booth == "B7" && val.id == "B10")) {
+                if (!$scope.boothdata[index]['bv_percent']) $scope.boothdata[index]['bv_percent'] = 0;
+                $scope.boothdata[index]['bv_percent'] += 1;
+              }
+
+            });
+          $timeout(function() {
+            $scope.loader = false;
+          }, 1000);
+
+        })
+
+      })
+
+
+      $scope.activetab = 'booth_member';
+      $scope.markactive = function(tab) {
+        $scope.activetab = tab;
+      }
+
+      $scope.showTabs = function(tabid) {
+       // console.log('tabid' + tabid);
+        $scope.bfactsdata = bfactsdata[tabid]
+       // console.log($scope.bfactsdata);
+        if ($scope.bfactsdata) {
+          document.getElementById('bfactsform').style.display = '';
+          let a = document.forms['bfactsform'].elements;
+          //console.log("-------" + a.length);
+          for (i = 0; i < a.length; i++) {
+            if (a[i].type == "select-one") {
+              a[i].innerHTML = `<option value="${$scope.bfactsdata[a[i].name]}">${$scope.bfactsdata[a[i].name]}<option>`
+            }
+            if (a[i].type == "number") {
+              a[i].type = 'text';
+            }
+            if ($scope.bfactsdata[a[i].name])
+              a[i].value = $scope.bfactsdata[a[i].name];
+          }
+
+        } else {
+          document.getElementById('bfactsform').style.display = 'none';
+        }
+
+
+        $scope.loader = true;
+        $scope.verifieddata1 = $scope.verifieddata.filter(checkdata)
+
+        function checkdata(val) {
+          //console.log('test' + val.booth + tabid);
+          if (val.booth == tabid || (val.booth == "B7" && tabid == "B10"))
+            return true;
+          else return false;
+
+        }
+        //************ EVENT START ***********
+        // let temptabid = tabid;
+        // if (tabid == "B17") temptabid += "B10,B7";
+        // if (tabid == "B10") temptabid += "B10,B7";
+        const event = new CustomEvent("generateReport", {
+          detail: {
+            idlist: tabid
+          }
+        });
+
+
+        document.dispatchEvent(event);
+        //************ EVENT START ***********
+
+        $scope.members = [];
+        for (var i = 0; i < $scope.boothdata.length; i++) {
+          if ($scope.boothdata[i].id == tabid) {
+            $scope.members.push($scope.boothdata[i]);
+          }
+        }
+
+        $scope.tabDisplay = true;
+        $scope.tabid = tabid;
+        $scope.agents = [];
+        var defer = $q.defer();
+        var promise = [];
+        promise.push($http.get('/getTreeChildNode?title=Booth Adhyaksh' + '&id=' + tabid).then(function(response1) {
+          if (response1.data.length > 0) {
+            response1.data.forEach((vd) => {
+              $scope.members.push(vd);
+            });
+          }
+
+        }));
+
+
+
+        $q.all(promise).then(function() {
+          let promise2 = [];
+          $scope.members.forEach(baid => {
+            promise2.push($http.get('/getTreeChildNode?title=General Secretary' + '&id=' + baid.id).then(function(response2) {
+              if (response2.data.length > 0) {
+                response2.data.forEach((vd) => {
+                  $scope.members.push(vd);
+                });
+              }
+            }));
+          });
+
+          $q.all(promise2).then(function() {
+            $scope.members.forEach(baid => {
+              ($http.get('/getTreeChildNode?title=Booth Agent' + '&id=' + baid.id).then(function(response2) {
+                if (response2.data.length > 0) {
+                  response2.data.forEach((vd) => {
+                    $scope.members.push(vd);
+                  });
+                }
+              }));
+            });
+          });
+        });
+
+
+        $q.all(promise).then(function() {
+         // console.log($scope.members);
+          $timeout(function() {
+            $scope.loader = false;
+          }, 1000);
+        })
+
+
+
+
+      }
+
+    });
+  </script>
+
+
+
+
+  <script src="./JS/edetails.js"></script>
+  <link rel="stylesheet" href="./CSS/edetails.css">
+  <%- include('./partials/footer.ejs')%>

@@ -1,0 +1,72 @@
+<%- include('../partials/header.ejs')%>
+<%- include('../partials/navbar.ejs')%>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6 ">
+      <figure class="highcharts-figure">
+
+        <div id="container1"></div>
+        <p class="highcharts-description">
+          Report description.........
+        </p>
+      </figure>
+    </div>
+    <div class="col-sm-6 .col-md-6 .col-lg-6 .col-xl-6 ">
+       
+          <figure class="highcharts-figure">
+
+            <div id="container3"></div>
+            <p class="highcharts-description">
+                Report description.........
+            </p>
+          </figure>
+        
+      
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 .col-md-4 .col-lg-4 .col-xl-4 ">
+        <figure class="highcharts-figure">
+
+          <div id="container2"></div>
+          <p class="highcharts-description">
+              Report description.........
+          </p>
+        </figure>
+      </div>
+    <div class="col-sm-4 .col-md-4 .col-lg-4 .col-xl-4"><figure class="highcharts-figure">
+<div id="container4"></div>
+        <p class="highcharts-description">
+            Report description.........
+        </p>
+      </figure></div>
+      <div class="col-sm-4 .col-md-4 .col-lg-4 .col-xl-4"><figure class="highcharts-figure">
+        <div id="container5"></div>
+                <p class="highcharts-description">
+                    Report description.........
+                </p>
+              </figure></div>
+  </div>
+</div>
+
+<style>
+    .highcharts-description{
+        display: none;
+    }
+</style>
+
+<div class="container mt-5 datatablesection">
+    <%- include('./HighChartReport/datatable.ejs')%>
+</div>
+
+<script src="../HighChartReport/highchartscript.js"></script>
+
+<%- include('../partials/footer.ejs')%>
