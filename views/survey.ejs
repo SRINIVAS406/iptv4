@@ -52,17 +52,30 @@
       <div class="form-group">
         <label for="booth">Ward</label>
         <select class="form-control" id="ward" name="ward" onchange="addbooths()" required>
-          <option value="">--None--</option>
+                <option value="">--None--</option>
                 <option value="W10">W10</option>
                 <option value="W11">W11</option>
+                <option value="W12">W12</option>
                 <option value="W13">W13</option>
                 <option value="W15">W15</option>
+                <option value="W14">W14</option>
+                <option value="W17">W17</option>
+                <option value="W18">W18</option>
+                <option value="W19">W19</option>
+                <option value="W20">W20</option>
+                <option value="W21">W21</option>
+                <option value="W22">W22</option>
+                <option value="W23">W23</option>
+                <option value="W24">W24</option>
                 <option value="W25">W25</option>
+                <option value="W26">W26</option>
                 <option value="W31">W31</option>
                 <option value="W32">W32</option>
                 <option value="W33">W33</option>
                 <option value="W34">W34</option>
-        </select>
+                
+                <option value="W29">W29</option>
+              </select>
       </div>
       <div class="form-group">
         <label for="booth">Booth</label>
@@ -197,16 +210,28 @@
 
   function addbooths() {
     var wardRel = {
-  "W11":["B4","B5","B6","B7","B8","B9","B10","B11","B12","B15","B17"],
-  "W32": ["B216","B217","B218","B219","B220","B222","B223","B225","B238","B239","B240","B245"],
-  "W34":["B255","B256","B257","B258","B259","B260","B261","B262","B263","B264","B265","B266"],
-  "W33": ["B243", "B244", "B245", "B246", "B247", "B248", "B249", "B250", "B251", "B252", "B253","B254"],
-  "W31": ["B227", "B228", "B229", "B230", "B231", "B232", "B233", "B234", "B235", "B236", "B237"],
-  "W15": ["B68", "B74", "B70", "B77", "B78", "B164", "B170", "B171", "B172", "B173"],
-   "W10": ["B54", "B55", "B56", "B57", "B58", "B59", "B60", "B61", "B62", "B63", "B64","B65", "B66"],
+        "W11": ["B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B15", "B17"],
+        "W32": ["B216", "B217", "B218", "B219", "B220", "B222", "B223", "B225", "B238", "B239", "B240", "B245"],
+        "W34": ["B255", "B256", "B257", "B258", "B259", "B260", "B261", "B262", "B263", "B264", "B265", "B266"],
+        "W33": ["B243", "B244", "B245", "B246", "B247", "B248", "B249", "B250", "B251", "B252", "B253","B254"],
+        "W31": ["B227", "B228", "B229", "B230", "B231", "B232", "B233", "B234", "B235", "B236", "B237"],
+        "W15": ["B68", "B74", "B70", "B77", "B78", "B164", "B170", "B171", "B172", "B173"],
+        "W10": ["B1","B2","B3","B54", "B55", "B56", "B57", "B58", "B59", "B60", "B61", "B62", "B63", "B64","B65", "B66"],
         "W25": ["B144", "B145", "B194", "B195", "B196", "B197", "B199", "B200"],
-        "W13": ["B13", "B14", "B16", "B18", "B20", "B21", "B22", "B23", "B24", "B76", "B46", "B43","B15"]
-};
+        "W13": ["B13", "B14", "B16", "B18","B19", "B20", "B21", "B22", "B23", "B24", "B76", "B46", "B43","B15"],
+        "W17": ["B165", "B162", "B158", "B167", "B163", "B87", "B160", "B166", "B161"],
+        "W18": ["B66", "B67", "B71", "B72", "B73", "B75"],
+        "W19": ["B157","B168","B175","B176","B177","B178","B179","B181","B182"],
+        "W20": ["B154", "B155", "B183", "B184", "B185", "B186", "B188", "B189", "B190", "B191", "B192", "B193", "B198"],
+        "W12": ["B47", "B48", "B49", "B50", "B51", "B52", "B53", "B54", "B55"],
+        "W29": ["B112", "B113", "B114", "B115", "B116", "B117", "B118", "B119", "B120"],
+        "W21": ["B146", "B147", "B148", "B149", "B150", "B151", "B156", "B159", "B187"],
+        "W22": ["B84", "B85", "B88", "B89", "B90", "B91", "B92", "B93", "B94", "B152", "B153"],
+        "W24": ["B100", "B101", "B104", "B105", "B106", "B109", "B110", "B111"],
+        "W26": ["B134", "B135", "B136", "B142", "B138", "B139", "B137", "B140", "B141", "B201", "B202"],
+        "W23": ["B95", "B96", "B97", "B98", "B99", "B102", "B103", "B108"],
+        "W14": ["B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33", "B34", "B35", "B36", "B37", "B38"]
+      };
     var wardid = document.getElementById('ward').value;
     var booth = document.getElementById('booth');
     booth.innerHTML = `<option value="">--None--</option>`;
